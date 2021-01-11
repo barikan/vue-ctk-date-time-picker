@@ -197,7 +197,8 @@
             .filter(h => h >= minEnabledHour && h <= maxEnabledHour)
 
           if (!enabledHours.includes(this.hour) && this.behaviour && this.behaviour.time && this.behaviour.time.nearestIfDisabled) {
-            this.hour = enabledHours[0] // eslint-disable-line
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.hour = (this.hour < minEnabledHour) ? minEnabledHour : maxEnabledHour
             this.emitValue()
           }
 
@@ -220,7 +221,8 @@
             const minTime = moment(this.minTime, 'h:mm a')
             const minTimeHour = parseInt(minTime.format('h'), 10) + (this.apm.toUpperCase() === 'PM' ? 12 : 0)
             minEnabledMinute = minTimeHour === this.hour ? parseInt(minTime.format('mm'), 10) : minEnabledMinute
-          } else if (this.maxTime) {
+          }
+          if (this.maxTime) {
             const maxTime = moment(this.maxTime, 'h:mm a')
             const maxTimeHour = parseInt(maxTime.format('h'), 10) + (this.apm.toUpperCase() === 'PM' ? 12 : 0)
             maxEnabledMinute = maxTimeHour === this.hour ? parseInt(maxTime.format('mm'), 10) : maxEnabledMinute
@@ -230,7 +232,8 @@
             const minTime = moment(this.minTime, 'HH:mm')
             const minTimeHour = parseInt(moment(this.minTime, 'HH:mm').format('HH'), 10)
             minEnabledMinute = minTimeHour === this.hour ? parseInt(minTime.format('mm'), 10) : minEnabledMinute
-          } else if (this.maxTime) {
+          }
+          if (this.maxTime) {
             const maxTime = moment(this.maxTime, 'HH:mm')
             const maxTimeHour = parseInt(moment(this.maxTime, 'HH:mm').format('HH'), 10)
             maxEnabledMinute = maxTimeHour === this.hour ? parseInt(maxTime.format('mm'), 10) : maxEnabledMinute
@@ -243,7 +246,8 @@
             .filter(m => m >= minEnabledMinute && m <= maxEnabledMinute)
 
           if (!enabledMinutes.includes(this.minute) && this.behaviour && this.behaviour.time && this.behaviour.time.nearestIfDisabled) {
-            this.minute = enabledMinutes[0] // eslint-disable-line
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.minute = (this.minute < minEnabledMinute) ? minEnabledMinute : maxEnabledMinute
             this.emitValue()
           }
 
